@@ -14,7 +14,7 @@ final class Topic extends Entity{
     private $user;
     private $category;
     private $creationDate;
-    private $closed;
+    private $isLocked;
 
     public function __construct($data){         
         $this->hydrate($data);        
@@ -68,6 +68,57 @@ final class Topic extends Entity{
      */ 
     public function setUser($user){
         $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * Get the value of category
+     */ 
+    public function getCategory(){
+        return $this->category;
+    }
+
+    /**
+     * Set the value of category
+     *
+     * @return  self
+     */ 
+    public function setCategory($category){
+        $this->category = $category;
+        return $this;
+    }
+
+    /**
+     * Get the value of creationDate
+     */ 
+    public function getCreationDate(){
+        return $this->creationDate;
+    }
+
+    /**
+     * Set the value of creationDate
+     *
+     * @return  self
+     */ 
+    public function setCreationDate($creationDate){
+        $this->creationDate = $creationDate;
+        return $this;
+    }
+
+    /**
+     * Get the value of isLocked
+     */ 
+    public function getIsLocked(){
+        return $this->isLocked;
+    }
+
+    /**
+     * Set the value of isLocked
+     *
+     * @return  self
+     */ 
+    public function setIsLocked($isLocked){
+        $this->isLocked = $isLocked;
         return $this;
     }
 

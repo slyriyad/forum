@@ -1,12 +1,12 @@
 <?php
-    $categories = $result["data"]['categories']; 
+    $users = $result["data"]['users']; 
 ?>
 
 <h1>Liste des utilisateurs</h1>
 
 <?php
-foreach($categories as $category ){ ?>
-    <p><a href="index.php?ctrl=forum&action=listTopicsByCategory&id=<?= $category->getId() ?>"><?= $category->getName() ?></a></p>
+foreach($users as $user ){ ?>
+    <p><a href="index.php?ctrl=forum&action=listTopicsByUser&id=<?= $user->getId() ?>"><?= $user->getNickName() ?></a></p>
 <?php }
 
 

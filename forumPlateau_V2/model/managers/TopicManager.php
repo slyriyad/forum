@@ -27,4 +27,22 @@ class TopicManager extends Manager{
             $this->className
         );
     }
+
+    // récupérer tous les topics avec auteur
+    public function findAllWithAuthors($order = null) {
+
+        $orderQuery = ($order) ?                 
+            "ORDER BY ".$order[0]. " ".$order[1] :
+            "";
+
+        $sql = "SELECT *
+                FROM ".$this->tableName." 
+                INNER JOIN user On user.id_user = ".$this->tableName.".user_id
+                ".$orderQuery;
+
+        return $this->getMultipleResults(
+            DAO::select($sql), 
+            $this->className
+        );
+    }
 }

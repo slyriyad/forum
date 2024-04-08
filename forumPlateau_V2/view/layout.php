@@ -39,7 +39,10 @@
                                 ?>
                                 <a href="index.php?ctrl=security&action=login">Connexion</a>
                                 <a href="index.php?ctrl=security&action=register">Inscription</a>
-                                <a href="index.php?ctrl=forum&action=index">Liste des catégories</a>
+                                <a href="index.php?ctrl=forum&action=listCategories">Liste des catégories</a>
+                                <a href="index.php?ctrl=forum&action=listUsers">Liste des utilisateurs</a>
+                                <a href="index.php?ctrl=forum&action=listTopics">Liste des topics</a>
+                                <a href="index.php?ctrl=forum&action=listPosts">Liste des posts</a>
                             <?php
                             }
                         ?>
