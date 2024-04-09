@@ -3,11 +3,17 @@
 ?>
 
 <h1>Liste des catégories</h1>
-
+<ul class="list-group">
 <?php
 foreach($categories as $category ){ ?>
-    <p><a href="index.php?ctrl=forum&action=listTopicsByCategory&id=<?= $category->getId() ?>"><?= $category->getName() ?></a></p>
-<?php }
-
+    <li class="list-group-item"><a href="index.php?ctrl=forum&action=listTopicsByCategory&id=<?= $category->getId() ?>"><?= $category->getName() ?></a><br>
+        <form action="index.php?ctrl=forum&action=delCategory" method="post">
+            <input type="hidden" name="supCat" value="<?= $category->getId() ?>">
+            <input type="submit" class="btn btn-danger" name="del" value ="Supprimer">
+        </form>
+    </li>
+    
+<?php } ?>
+</ul>
 
   

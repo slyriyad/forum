@@ -45,4 +45,12 @@ class TopicManager extends Manager{
             $this->className
         );
     }
+
+    public function delTopic($id){
+        $sql = "DELETE FROM post WHERE topic_id = :id;
+                DELETE FROM topic WHERE id_topic = :id;
+                ";
+
+        return DAO::delete($sql, ['id' => $id]); 
+    }
 }

@@ -95,4 +95,183 @@ class ForumController extends AbstractController implements ControllerInterface{
             ]
         ];
     }
+
+    public function addCategory() {
+        
+        // créer une nouvelle instance de categoryManager
+        $categoryManager = new CategoryManager();
+        if (isset($_POST['add'])) {
+
+            $nom = $_POST['name'];
+            $data = [
+                'name' => $nom
+            ];
+            // ajouter une categorie
+            $categories = $categoryManager->add($data);
+        }
+            // le controller communique avec la vue "addCategory" (view) pour lui envoyer la liste des post (data)
+            return [
+                "view" => VIEW_DIR."forum/addCategory.php",
+                "meta_description" => "Liste des post du forum",
+                "data" => [
+                    // "categories" => $categories
+                    ]
+                ];
+    }
+
+    public function addUser() {
+        
+        // créer une nouvelle instance de categoryManager
+        $userManager = new UserManager();
+        if (isset($_POST['add'])) {
+
+            $nickName = $_POST['nickName'];
+            $mail = $_POST['mail'];
+            $password = $_POST['password'];
+            $role = 'user';
+            $registrationDate = date_default_timezone_set('Europe/Paris');
+            $registrationDate = date("Y-m-d H:i:s");
+            $data = [
+                'nickName' => $nickName,
+                'mail' => $mail,
+                'password' => $password,
+                'role' => $role,
+                'registrationDate' => $registrationDate
+            ];
+            // ajouter une categorie
+            $categories = $userManager->add($data);
+        }
+            // le controller communique avec la vue "adduser" (view) pour lui envoyer la liste des post (data)
+            return [
+                "view" => VIEW_DIR."forum/addUser.php",
+                "meta_description" => "Liste des post du forum",
+                "data" => [
+                    // "categories" => $categories
+                    ]
+                ];
+    }
+
+    public function addTopic() {
+        
+        // créer une nouvelle instance de categoryManager
+        $topicManager = new TopicManager();
+        if (isset($_POST['add'])) {
+
+            $title = $_POST['title'];
+            $category_id = 1;
+            $user_id = 1;
+            $creationDate = date_default_timezone_set('Europe/Paris');
+            $creationDate = date("Y-m-d H:i:s");
+            $data = [
+                'title' => $title,
+                'creationDate' => $creationDate,
+                'category_id' => $category_id,
+                'user_id' => $user_id
+            ];
+            // ajouter une categorie
+            $categories = $topicManager->add($data);
+        }
+            // le controller communique avec la vue "addTopic" (view) pour lui envoyer la liste des post (data)
+            return [
+                "view" => VIEW_DIR."forum/addTopic.php",
+                "meta_description" => "Liste des post du forum",
+                "data" => [
+                    // "categories" => $categories
+                    ]
+                ];
+    }
+
+    public function addPost() {
+        
+        // créer une nouvelle instance de categoryManager
+        $postManager = new PostManager();
+        if (isset($_POST['add'])) {
+
+            $text = $_POST['text'];
+            $topic_id = 1;
+            $user_id = 1;
+            $creationDate = date_default_timezone_set('Europe/Paris');
+            $creationDate = date("Y-m-d H:i:s");
+            $data = [
+                'text' => $text,
+                'creationDate' => $creationDate,
+                'topic_id' => $topic_id,
+                'user_id' => $user_id
+            ];
+            // ajouter une categorie
+            $categories = $postManager->add($data);
+        }
+            // le controller communique avec la vue "addPost" (view) pour lui envoyer la liste des post (data)
+            return [
+                "view" => VIEW_DIR."forum/addPost.php",
+                "meta_description" => "Liste des post du forum",
+                "data" => [
+                    // "categories" => $categories
+                    ]
+                ];
+    }
+
+    public function delCategory($id) {
+        
+        // créer une nouvelle instance de categoryManager
+        $categoryManager = new CategoryManager();
+        if (isset($_POST['del'])) {
+            $id = $_POST['supCat'];
+            // supprimer la categorie choisie grâce à la méthode delete de Manager.php 
+            $categories = $categoryManager->delete($id);
+            header("location:index.php?ctrl=forum&action=listCategories");
+        }
+
+        // le controller communique avec la vue "listcategories" (view) pour lui envoyer la liste des utilisateurs (data)
+        return [
+            "view" => VIEW_DIR."forum/listCategories.php",
+            "meta_description" => "Liste des categories du forum",
+            "data" => [
+                "categories" => $categories
+            ]
+        ];
+    }
+
+    public function delUser($id) {
+        
+        // créer une nouvelle instance de UserManager
+        $userManager = new UserManager();
+        if (isset($_POST['del'])) {
+            $id = $_POST['supCat'];
+            // supprimer l'utilisateur' choisie grâce à la méthode delete de Manager.php 
+            $users = $userManager->delete($id);
+            header("location:index.php?ctrl=forum&action=listUsers");
+        }
+
+        // le controller communique avec la vue "listUsers" (view) pour lui envoyer la liste des utilisateurs (data)
+        return [
+            "view" => VIEW_DIR."forum/listUsers.php",
+            "meta_description" => "Liste des Users du forum",
+            "data" => [
+                "users" => $users
+            ]
+        ];
+    }
+
+    public function delTopic($id) {
+        
+        // créer une nouvelle instance de TopicManager
+        $topicManager = new TopicManager();
+        if (isset($_POST['del'])) {
+            $id = $_POST['supCat'];
+            // supprimer l'utilisateur' choisie grâce à la méthode delete de Manager.php 
+            $topics = $topicManager->delTopic($id);
+            header("location:index.php?ctrl=forum&action=listTopics");
+        }
+
+        // le controller communique avec la vue "listTopics" (view) pour lui envoyer la liste des utilisateurs (data)
+        return [
+            "view" => VIEW_DIR."forum/listTopics.php",
+            "meta_description" => "Liste des Topics du forum",
+            "data" => [
+                "Topics" => $Topics
+            ]
+        ];
+    }
+
 }
