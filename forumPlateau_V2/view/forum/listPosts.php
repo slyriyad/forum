@@ -6,5 +6,9 @@
 
 <?php
 foreach($posts as $post ){ ?>
-    <p><a href="#"><?= $post ?></a> par <?= $post->getUser() ?></p>
+    <li class="list-group-item"><p><a href="#"><?= $post ?></a> par <a href="#"><?= $post->getUser() ?></a></p>
+    <form action="index.php?ctrl=forum&action=delpost" method="post">
+        <input type="hidden" name="supPost" value="<?= $post->getId() ?>">
+        <input type="submit" class="btn btn-danger" name="del" value ="Supprimer">
+    </form>
 <?php }

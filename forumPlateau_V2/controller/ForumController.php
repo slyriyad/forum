@@ -237,7 +237,7 @@ class ForumController extends AbstractController implements ControllerInterface{
         // créer une nouvelle instance de UserManager
         $userManager = new UserManager();
         if (isset($_POST['del'])) {
-            $id = $_POST['supCat'];
+            $id = $_POST['supUser'];
             // supprimer l'utilisateur' choisie grâce à la méthode delete de Manager.php 
             $users = $userManager->delete($id);
             header("location:index.php?ctrl=forum&action=listUsers");
@@ -258,7 +258,7 @@ class ForumController extends AbstractController implements ControllerInterface{
         // créer une nouvelle instance de TopicManager
         $topicManager = new TopicManager();
         if (isset($_POST['del'])) {
-            $id = $_POST['supCat'];
+            $id = $_POST['supPost'];
             // supprimer l'utilisateur' choisie grâce à la méthode delete de Manager.php 
             $topics = $topicManager->delTopic($id);
             header("location:index.php?ctrl=forum&action=listTopics");
@@ -269,7 +269,41 @@ class ForumController extends AbstractController implements ControllerInterface{
             "view" => VIEW_DIR."forum/listTopics.php",
             "meta_description" => "Liste des Topics du forum",
             "data" => [
-                "Topics" => $Topics
+                "Topics" => $topics
+            ]
+        ];
+    }
+
+    public function delPost($id) {
+        
+        // créer une nouvelle instance de postManager
+        $postManager = new PostManager();
+        if (isset($_POST['del'])) {
+            $id = $_POST['supPost'];
+            // supprimer l'utilisateur' choisie grâce à la méthode delete de Manager.php 
+            $posts = $postManager->delete($id);
+            header("location:index.php?ctrl=forum&action=listPosts");
+        }
+
+        // le controller communique avec la vue "listposts" (view) pour lui envoyer la liste des utilisateurs (data)
+        return [
+            "view" => VIEW_DIR."forum/listPosts.php",
+            "meta_description" => "Liste des posts du forum",
+            "data" => [
+                "posts" => $posts
+            ]
+        ];
+    }
+
+    public function updateTopic($id) {
+        $topicManager = new TopicManager();
+        $topic = $topicManager->findOneById($id);
+    
+        return [
+            "view" => VIEW_DIR."forum/updateTopic.php",
+            "meta_description" => "Modification de la catégorie",
+            "data" => [
+                "topic" => $topic
             ]
         ];
     }
