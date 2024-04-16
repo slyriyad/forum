@@ -52,4 +52,6 @@ class TopicManager extends Manager{
 
         return DAO::delete($sql, ['id' => $id]); 
     }
+
 }
+

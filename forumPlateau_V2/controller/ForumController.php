@@ -50,7 +50,7 @@ class ForumController extends AbstractController implements ControllerInterface{
         // créer une nouvelle instance de TopicManager
         $topicManager = new TopicManager();
         // récupérer la liste de toutes les topic grâce à la méthode findAll de Manager.php (triés par nom)
-        $topics = $topicManager->findAllWithAuthors(["title", "DESC"]);
+        $topics = $topicManager->findAll(["title", "DESC"]);
 
         // le controller communique avec la vue "listTopics" (view) pour lui envoyer la liste des topic (data)
         return [
@@ -308,4 +308,20 @@ class ForumController extends AbstractController implements ControllerInterface{
         ];
     }
 
+    public function detailTopic($id) {
+        $postManager = new PostManager();
+        $topicManager = new TopicManager();
+        $posts = $postManager->detailTopic($id);
+        $topic = $topicManager->findOneById($id);
+        
+        return [
+            "view" => VIEW_DIR."forum/detailTopic.php",
+            "meta_description" => "détail topic",
+         
+             "data" => [
+                "posts" => $posts,
+                "topic" => $topic,
+            ]
+        ];
+    }
 }
