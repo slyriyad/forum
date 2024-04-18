@@ -18,44 +18,61 @@
                 <h3 class="message" style="color: red"><?= App\Session::getFlash("error") ?></h3>
                 <h3 class="message" style="color: green"><?= App\Session::getFlash("success") ?></h3>
                 <header>
-                    <nav>
-                        <div id="nav-left">
-                            <a href="index.php?home.php">Accueil</a>
-                            <?php
-                            if(App\Session::isAdmin()){
-                                ?>
-                                <a href="index.php?ctrl=home&action=users">Voir la liste des gens</a>
-                            <?php } ?>
-                        </div>
-                        <div id="nav-right">
-                        <?php
-                            // si l'utilisateur est connecté 
-                            if(App\Session::getUser()){
-                                ?>
-                                <a href="index.php?ctrl=security&action=profile"><span class="fas fa-user"></span>&nbsp;<?= App\Session::getUser()?></a>
-                                <a href="index.php?ctrl=security&action=logout">Déconnexion</a>
-                                <?php
-                            }
-                            else{
-                                ?>
-                                <a href="index.php?ctrl=security&action=login">Connexion</a>
-                                <a href="index.php?ctrl=security&action=register">Inscription</a>
-                                <a href="index.php?ctrl=forum&action=listCategories">Liste des catégories</a>
-                                <a href="index.php?ctrl=forum&action=listUsers">Liste des utilisateurs</a>
-                                <a href="index.php?ctrl=forum&action=listTopics">Liste des topics</a>
-                                <a href="index.php?ctrl=forum&action=listPosts">Liste des posts</a>
-                            <?php
-                            }
-                        ?>
-                        </div>
-                    </nav>
+                <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container" >
+      <a class="navbar-brand" href="#">
+      <h3 class="my-0 mr-md-auto font-weight-normal" style="color: rgb(0,0,0); font-weight: 700;text-decoration:none"><a href="index.php?home"style="color: rgb(0,0,0); font-weight: 700;text-decoration:none">FORUM</h3>
+      </a>
+      <button class="d-lg-none navbar-burger btn px-0 rounded-pill" style="border: none;" type="button">
+        <svg class="text-primary" width="51" height="51" viewbox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="56" height="56" rx="28" fill="currentColor"></rect>
+          <path d="M37 32H19M37 24H19" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </button>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav w-100 me-4">
+          <li class="nav-item me-4"><a class="nav-link" href="index.php?ctrl=forum&action=listCategories">Liste des catégories</a></li>
+          <li class="nav-item me-4"><a class="nav-link" href="index.php?ctrl=forum&action=listUsers">Liste des utilisateurs</a></li>
+          <li class="nav-item me-4"><a class="nav-link" href="index.php?ctrl=forum&action=listTopics">Liste des topics</a></li>
+          <li class="nav-item me-auto"><a class="nav-link" href="index.php?ctrl=forum&action=listPosts">Liste des posts</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.php?ctrl=security&action=login">Connexion</a></li>
+        </ul>
+        <div class="flex-shrink-0"><a class="btn btn-dark py-3" style="background-color: rgb(0,0,0)" href="index.php?ctrl=security&action=register">Inscription</a></div>
+      </div>
+    </div>
+  </nav>
+  <div class="d-none navbar-menu position-fixed top-0 start-0 bottom-0 w-75 mw-xs" style="z-index: 9999;">
+    <div class="navbar-close navbar-backdrop position-fixed top-0 start-0 end-0 bottom-0 bg-dark" style="opacity: 75%;"></div>
+    <nav class="position-relative h-100 w-100 d-flex flex-column justify-content-between py-8 px-8 bg-white overflow-auto">
+      <div class="d-flex align-items-center">
+        <a class="me-auto h4 mb-0 text-decoration-none" href="#">
+          <img class="img-fluid" src="../public/img/logo.png" alt="">
+        </a>
+        <a class="navbar-close" href="#">
+          <svg width="24" height="24" viewbox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 18L18 6M6 6L18 18" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </a>
+      </div>
+      <div class="py-12">
+        <ul class="nav flex-column">
+        <li class="nav-item me-4"><a class="nav-link" href="index.php?ctrl=forum&action=listCategories">Liste des catégories</a></li>
+          <li class="nav-item me-4"><a class="nav-link" href="index.php?ctrl=forum&action=listUsers">Liste des utilisateurs</a></li>
+          <li class="nav-item me-auto"><a class="nav-link" href="index.php?ctrl=forum&action=listTopics">Liste des topics</a></li>
+          <li class="nav-item me-auto"><a class="nav-link" href="index.php?ctrl=forum&action=listPosts">Liste des posts</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.php?ctrl=security&action=login">Connexion</a></li>
+        </ul>
+        <div class="flex-shrink-0"><a class="btn btn-primary py-3" href="index.php?ctrl=security&action=register">Inscription</a></div>
+    </nav>
+  </div>
+</div>
                 </header>
                 
-                <main id="forum">
+                <main id="forum" style="height:85vh">
                     <?= $page ?>
                 </main>
             </div>
-            <footer>
+            <footer class="blog-footer" style="display:flex;justify-content:center;height:2vh">
                 <p>&copy; <?= date_create("now")->format("Y") ?> - <a href="#">Règlement du forum</a> - <a href="#">Mentions légales</a></p>
             </footer>
         </div>
