@@ -1,8 +1,9 @@
 <?php
     $topics = $result["data"]['topics']; 
+    $category = $result["data"]['category']; 
 ?>
 
-<h1>Liste des topics</h1>
+<h1 style="text-align: center;color: black;margin:5% 0%"><?= $category->getName() ?></h1>
 
 <?php
 foreach($topics as $topic ){ ?>

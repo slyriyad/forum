@@ -100,7 +100,7 @@
                     </div>
                 </header>
                 
-                <main id="forum" style="height:85vh">
+                <main id="forum">
                     <?= $page ?>
                 </main>
             </div>
