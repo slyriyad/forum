@@ -130,4 +130,13 @@ final class User extends Entity{
     public function __toString() {
         return $this->nickName;
     }
+
+    // Method pour vérifier le role de l'utilisateur
+    public function hasRole($role) {
+        if ($this->getRole() === $role) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

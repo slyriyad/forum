@@ -84,7 +84,9 @@ class SecurityController extends AbstractController{
                 if($user){
                     $hash = $user->getPassword();
                     if(password_verify($password, $hash)){
-                        var_dump("ok");die;
+                        Session::setUser($user);
+
+                 
                     } else {
                         // header("Location: index.php?ctrl=security&action=login");exit;
                         //  message utilisateur inconnu ou mdp incorrect
@@ -103,5 +105,10 @@ class SecurityController extends AbstractController{
             "meta_description" => "login",
             ];
     }
-    public function logout () {}
+    public function logout () {
+        // Je retire les informations user de la session.
+        unset($_SESSION["user"]);
+
+        $this->redirectTo("index", "home");
+    }
 }
