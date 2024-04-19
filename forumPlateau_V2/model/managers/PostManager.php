@@ -37,17 +37,32 @@ class PostManager extends Manager{
     
     public function detailTopic($id){
 
-
-        
         $sql = "SELECT * 
                 FROM ".$this->tableName." p 
-                WHERE p.topic_id = :id";
+                WHERE p.topic_id = :id
+                ORDER BY creationDate";
        
         // la requête renvoie plusieurs enregistrements --> getMultipleResults
         return  $this->getMultipleResults(
             DAO::select($sql, ['id' => $id]), 
             $this->className
         );
+    }
+
+    public function update($col,$newVal){
+
+        $sql = "UPDATE ".$this->tableName." p 
+                SET $col,'$newVal'
+                WHERE p.id_topic = :id";
+       
+        // la requête renvoie plusieurs enregistrements --> getMultipleResults
+        try{
+            return DAO::update($sql);
+        }
+        catch(\PDOException $e){
+            echo $e->getMessage();
+            die();
+        }
     }
 }
 

@@ -45,23 +45,6 @@ class ForumController extends AbstractController implements ControllerInterface{
         ];
     }
 
-    public function listTopics() {
-        
-        // créer une nouvelle instance de TopicManager
-        $topicManager = new TopicManager();
-        // récupérer la liste de toutes les topic grâce à la méthode findAll de Manager.php (triés par nom)
-        $topics = $topicManager->findAll(["title", "DESC"]);
-
-        // le controller communique avec la vue "listTopics" (view) pour lui envoyer la liste des topic (data)
-        return [
-            "view" => VIEW_DIR."forum/listTopics.php",
-            "meta_description" => "Liste des topic du forum",
-            "data" => [
-                "topics" => $topics
-            ]
-        ];
-    }
-
     public function listPosts() {
         
         // créer une nouvelle instance de postManager
@@ -96,13 +79,30 @@ class ForumController extends AbstractController implements ControllerInterface{
         ];
     }
 
+    public function detailTopic($id) {
+        $postManager = new PostManager();
+        $topicManager = new TopicManager();
+        $posts = $postManager->detailTopic($id);
+        $topic = $topicManager->findOneById($id);
+        
+        return [
+            "view" => VIEW_DIR."forum/detailTopic.php",
+            "meta_description" => "détail topic",
+         
+             "data" => [
+                "posts" => $posts,
+                "topic" => $topic,
+            ]
+        ];
+    }
+
     public function addCategory() {
         
         // créer une nouvelle instance de categoryManager
         $categoryManager = new CategoryManager();
         if (isset($_POST['add'])) {
 
-            $nom = $_POST['name'];
+            $nom = filter_input(INPUT_POST,'name', FILTER_SANITIZE_FULL_SPECIAL_CHARS);;
             $data = [
                 'name' => $nom
             ];
@@ -119,57 +119,36 @@ class ForumController extends AbstractController implements ControllerInterface{
                 ];
     }
 
-    public function addUser() {
-        
-        // créer une nouvelle instance de categoryManager
-        $userManager = new UserManager();
-        if (isset($_POST['add'])) {
-
-            $nickName = $_POST['nickName'];
-            $mail = $_POST['mail'];
-            $password = $_POST['password'];
-            $role = 'user';
-            $registrationDate = date_default_timezone_set('Europe/Paris');
-            $registrationDate = date("Y-m-d H:i:s");
-            $data = [
-                'nickName' => $nickName,
-                'mail' => $mail,
-                'password' => $password,
-                'role' => $role,
-                'registrationDate' => $registrationDate
-            ];
-            // ajouter une categorie
-            $categories = $userManager->add($data);
-        }
-            // le controller communique avec la vue "adduser" (view) pour lui envoyer la liste des post (data)
-            return [
-                "view" => VIEW_DIR."forum/addUser.php",
-                "meta_description" => "Liste des post du forum",
-                "data" => [
-                    // "categories" => $categories
-                    ]
-                ];
-    }
-
-    public function addTopic() {
+    public function addTopic($id) {
         
         // créer une nouvelle instance de categoryManager
         $topicManager = new TopicManager();
+        $postManager = new PostManager();
+
         if (isset($_POST['add'])) {
 
-            $title = $_POST['title'];
-            $category_id = 1;
-            $user_id = 1;
-            $creationDate = date_default_timezone_set('Europe/Paris');
-            $creationDate = date("Y-m-d H:i:s");
-            $data = [
+            $title = filter_input(INPUT_POST,'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);;
+            $text = filter_input(INPUT_POST,'text', FILTER_SANITIZE_FULL_SPECIAL_CHARS);;
+
+            // ....
+            $data1 = [
                 'title' => $title,
-                'creationDate' => $creationDate,
-                'category_id' => $category_id,
-                'user_id' => $user_id
+                'category_id' => $id,
+                'user_id' => Session::getUser()->getId()
+            ];
+            
+            $idTopic = $topicManager->add($data1);
+            
+            // ....
+            $data2 = [
+                'text' => $text,
+                'topic_id' => $idTopic,
+                'user_id' => Session::getUser()->getId()
             ];
             // ajouter une categorie
-            $categories = $topicManager->add($data);
+            $postManager->add($data2);
+
+            $this->redirectTo("forum", "listTopicsByCategory", $id);
         }
             // le controller communique avec la vue "addTopic" (view) pour lui envoyer la liste des post (data)
             return [
@@ -181,25 +160,27 @@ class ForumController extends AbstractController implements ControllerInterface{
                 ];
     }
 
-    public function addPost() {
+    public function addPost($id) {
         
         // créer une nouvelle instance de categoryManager
         $postManager = new PostManager();
-        if (isset($_POST['add'])) {
+        $topicManager = new TopicManager();
 
-            $text = $_POST['text'];
-            $topic_id = 1;
-            $user_id = 1;
-            $creationDate = date_default_timezone_set('Europe/Paris');
-            $creationDate = date("Y-m-d H:i:s");
+        $topic = $topicManager->findOneById($id);
+
+        if (isset($_POST['add'])) {
+            //var_dump("ok");die;
+
+            $text = filter_input(INPUT_POST, "text", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+           
             $data = [
                 'text' => $text,
-                'creationDate' => $creationDate,
-                'topic_id' => $topic_id,
-                'user_id' => $user_id
+                'topic_id' => $id,
+                'user_id' => Session::getUser()->getId()
             ];
             // ajouter une categorie
-            $categories = $postManager->add($data);
+            $post = $postManager->add($data);
+            $this->redirectTo("forum", "detailTopic", $id);
         }
             // le controller communique avec la vue "addPost" (view) pour lui envoyer la liste des post (data)
             return [
@@ -207,8 +188,9 @@ class ForumController extends AbstractController implements ControllerInterface{
                 "meta_description" => "Liste des post du forum",
                 "data" => [
                     // "categories" => $categories
-                    ]
-                ];
+                    "topic" => $topic
+                ]
+            ];
     }
 
     public function delCategory($id) {
@@ -216,7 +198,7 @@ class ForumController extends AbstractController implements ControllerInterface{
         // créer une nouvelle instance de categoryManager
         $categoryManager = new CategoryManager();
         if (isset($_POST['del'])) {
-            $id = $_POST['supCat'];
+            $id = filter_input(INPUT_POST,'supCat', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             // supprimer la categorie choisie grâce à la méthode delete de Manager.php 
             $categories = $categoryManager->delete($id);
             header("location:index.php?ctrl=forum&action=listCategories");
@@ -237,7 +219,7 @@ class ForumController extends AbstractController implements ControllerInterface{
         // créer une nouvelle instance de UserManager
         $userManager = new UserManager();
         if (isset($_POST['del'])) {
-            $id = $_POST['supUser'];
+            $id = filter_input(INPUT_POST,'supUser', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             // supprimer l'utilisateur' choisie grâce à la méthode delete de Manager.php 
             $users = $userManager->delete($id);
             header("location:index.php?ctrl=forum&action=listUsers");
@@ -258,7 +240,7 @@ class ForumController extends AbstractController implements ControllerInterface{
         // créer une nouvelle instance de TopicManager
         $topicManager = new TopicManager();
         if (isset($_POST['del'])) {
-            $id = $_POST['supPost'];
+            $id = filter_input(INPUT_POST,'supPost', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             // supprimer l'utilisateur' choisie grâce à la méthode delete de Manager.php 
             $topics = $topicManager->delTopic($id);
             header("location:index.php?ctrl=forum&action=listTopics");
@@ -278,16 +260,16 @@ class ForumController extends AbstractController implements ControllerInterface{
         
         // créer une nouvelle instance de postManager
         $postManager = new PostManager();
-        if (isset($_POST['del'])) {
-            $id = $_POST['supPost'];
+        $post = $postManager->findOneById($id);
+        $topicId = $post->getTopic()->getId();
+
             // supprimer l'utilisateur' choisie grâce à la méthode delete de Manager.php 
-            $posts = $postManager->delete($id);
-            header("location:index.php?ctrl=forum&action=listPosts");
-        }
+            $postManager->delete($id);
+            $this->redirectTo("forum", "detailTopic", $topicId);
 
         // le controller communique avec la vue "listposts" (view) pour lui envoyer la liste des utilisateurs (data)
         return [
-            "view" => VIEW_DIR."forum/listPosts.php",
+            "view" => VIEW_DIR."forum/detailTopic.php",
             "meta_description" => "Liste des posts du forum",
             "data" => [
                 "posts" => $posts
@@ -295,33 +277,25 @@ class ForumController extends AbstractController implements ControllerInterface{
         ];
     }
 
-    public function updateTopic($id) {
-        $topicManager = new TopicManager();
-        $topic = $topicManager->findOneById($id);
-    
+    public function updatePost($id) {
+        $postManager = new PostManager();
+        $post = $postManager->findOneById($id);
+        $this->redirectTo("forum", "detailTopic", $topicId);
+        
+        if (isset($_POST['update'])) {
+            $text = filter_input(INPUT_POST,'text', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $colonne = 'text';
+            $post->update($colonne,$text);
+            $this->redirectTo("forum", "detailTopic", $topicId);
+        }
         return [
-            "view" => VIEW_DIR."forum/updateTopic.php",
-            "meta_description" => "Modification de la catégorie",
+            "view" => VIEW_DIR."forum/updatePost.php",
+            "meta_description" => "Modification du Post",
             "data" => [
-                "topic" => $topic
+                "post" => $post
             ]
         ];
     }
 
-    public function detailTopic($id) {
-        $postManager = new PostManager();
-        $topicManager = new TopicManager();
-        $posts = $postManager->detailTopic($id);
-        $topic = $topicManager->findOneById($id);
-        
-        return [
-            "view" => VIEW_DIR."forum/detailTopic.php",
-            "meta_description" => "détail topic",
-         
-             "data" => [
-                "posts" => $posts,
-                "topic" => $topic,
-            ]
-        ];
-    }
+    
 }

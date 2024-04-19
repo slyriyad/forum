@@ -32,7 +32,6 @@
                             <div class="collapse navbar-collapse">
                                 <ul class="navbar-nav w-100 me-4">
                                     <li class="nav-item me-4"><a class="nav-link" href="index.php?ctrl=forum&action=listCategories">Liste des catégories</a></li>
-                                    <li class="nav-item me-4"><a class="nav-link" href="index.php?ctrl=forum&action=listTopics">Liste des topics</a></li>
                                     <?php
                                     if(App\Session::isAdmin()){
                                     ?>
@@ -72,7 +71,6 @@
                             <div class="py-12">
                                 <ul class="nav flex-column">
                                     <li class="nav-item me-4"><a class="nav-link" href="index.php?ctrl=forum&action=listCategories">Liste des catégories</a></li>
-                                    <li class="nav-item me-4"><a class="nav-link" href="index.php?ctrl=forum&action=listTopics">Liste des topics</a></li>
                                     <li class="nav-item"><a class="nav-link" href="index.php?ctrl=security&action=login">Connexion</a></li>
                                     <?php
                                     if(App\Session::isAdmin()){

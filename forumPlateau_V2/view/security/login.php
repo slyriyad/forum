@@ -1,15 +1,3 @@
-<!-- <h1>Se connecter</h1>
-
-<form action="index.php?ctrl=security&action=login" method="post">
-    <label for="name">E-mail:</label><br>
-    <input type="email" placeholder="mail" name="mail"><br>
-
-
-    <label for="name">Password:</label><br>
-    <input type="password" placeholder="Password" name="password"><br>
-    <input type="submit" value="connexion" class="bouton" name="connexion">
-</form> -->
-
 
 <div style="display:flex;flex-direction:column;justify-content:center;align-items:center; height:100%;padding:5%;">
     <h2>Se connecter</h2>

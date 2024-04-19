@@ -14,5 +14,4 @@ class CategoryManager extends Manager{
         parent::connect();
     }
 
-
 }

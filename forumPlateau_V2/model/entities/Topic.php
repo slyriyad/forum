@@ -100,7 +100,7 @@ final class Topic extends Entity{
      *
      * @return  self
      */ 
-    public function setCreationDate($creationDate){
+    public function setCreationDate( $creationDate){
         $this->creationDate = $creationDate;
         return $this;
     }
