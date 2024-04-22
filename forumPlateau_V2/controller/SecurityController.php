@@ -85,6 +85,7 @@ class SecurityController extends AbstractController{
                     $hash = $user->getPassword();
                     if(password_verify($password, $hash)){
                         Session::setUser($user);
+                        $this->redirectTo("home", "home");
 
                  
                     } else {

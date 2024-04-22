@@ -16,7 +16,7 @@ class ForumController extends AbstractController implements ControllerInterface{
         // créer une nouvelle instance de CategoryManager
         $categoryManager = new CategoryManager();
         // récupérer la liste de toutes les catégories grâce à la méthode findAll de Manager.php (triés par nom)
-        $categories = $categoryManager->findAll(["name", "DESC"]);
+        $categories = $categoryManager->findAll(["name", "ASC"]);
 
         // le controller communique avec la vue "listCategories" (view) pour lui envoyer la liste des catégories (data)
         return [
@@ -169,10 +169,9 @@ class ForumController extends AbstractController implements ControllerInterface{
         $topic = $topicManager->findOneById($id);
 
         if (isset($_POST['add'])) {
-            //var_dump("ok");die;
-
+            
             $text = filter_input(INPUT_POST, "text", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-           
+            
             $data = [
                 'text' => $text,
                 'topic_id' => $id,
@@ -271,31 +270,32 @@ class ForumController extends AbstractController implements ControllerInterface{
         return [
             "view" => VIEW_DIR."forum/detailTopic.php",
             "meta_description" => "Liste des posts du forum",
-            "data" => [
-                "posts" => $posts
-            ]
         ];
     }
 
     public function updatePost($id) {
         $postManager = new PostManager();
         $post = $postManager->findOneById($id);
-        $this->redirectTo("forum", "detailTopic", $topicId);
-        
+    
         if (isset($_POST['update'])) {
-            $text = filter_input(INPUT_POST,'text', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $text = filter_input(INPUT_POST, 'text', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             $colonne = 'text';
-            $post->update($colonne,$text);
-            $this->redirectTo("forum", "detailTopic", $topicId);
+            $postManager->update($colonne, $text,$id);
+    
+            // Redirection après la mise à jour du post
+            $this->redirectTo("forum", "updatePost", $post->getId());
         }
+    
         return [
-            "view" => VIEW_DIR."forum/updatePost.php",
+            "view" => VIEW_DIR . "forum/updatePost.php",
             "meta_description" => "Modification du Post",
             "data" => [
                 "post" => $post
             ]
         ];
     }
+    
 
     
 }

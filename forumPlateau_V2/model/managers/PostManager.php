@@ -49,17 +49,15 @@ class PostManager extends Manager{
         );
     }
 
-    public function update($col,$newVal){
-
-        $sql = "UPDATE ".$this->tableName." p 
-                SET $col,'$newVal'
-                WHERE p.id_topic = :id";
-       
-        // la requête renvoie plusieurs enregistrements --> getMultipleResults
-        try{
-            return DAO::update($sql);
-        }
-        catch(\PDOException $e){
+    public function update($col, $newVal, $id) {
+        $sql = "UPDATE " . $this->tableName . " 
+                SET $col = :newVal
+                WHERE id_post = :id";
+    
+        // Exécute la requête de mise à jour
+        try {
+            return DAO::update($sql, ['newVal' => $newVal, 'id' => $id]);
+        } catch (\PDOException $e) {
             echo $e->getMessage();
             die();
         }

@@ -30,7 +30,7 @@
                                 </svg>
                             </button>
                             <div class="collapse navbar-collapse">
-                                <ul class="navbar-nav w-100 me-4">
+                                <ul class="navbar-nav w-100 me-4" style="justify-content: space-around">
                                     <li class="nav-item me-4"><a class="nav-link" href="index.php?ctrl=forum&action=listCategories">Liste des catégories</a></li>
                                     <?php
                                     if(App\Session::isAdmin()){

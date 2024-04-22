@@ -2,6 +2,8 @@
     $post = $result["data"]['post']; 
 ?>
 
-<label for="text">text:<br></label>
-<input type="text" value="" name="text"><br>
-<p><a name="update" href="index.php?ctrl=forum&action=updatePost&id=15">fffX</a></p>
+<form action="index.php?ctrl=forum&action=updatePost&id=<?= $post->getId() ?>" method="POST">
+    <label for="text">Texte :</label><br>
+    <input type="text" value="<?= $post->getText() ?>" name="text"><br>
+    <button type="submit" name="update">Mettre à jour</button>
+</form>

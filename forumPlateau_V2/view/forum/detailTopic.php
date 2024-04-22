@@ -35,11 +35,14 @@ $topic = $result["data"]['topic'];
                 <?= $formattedDate ?>
             </div>
         </div>
+        <?php if(App\Session::getUser()||App\Session::isAdmin()) { ?>
         <div class="card-footer" style="display:flex;justify-content: flex-end" >
-
-                <a href="index.php?ctrl=forum&action=delPost&id=<?= $post->getId() ?>">X</a>
-
+        <?php if(App\Session::getUser()->getId() == $post->getUser()->getId()) {?>
+            <a type="button" class="btn btn-primary" href="index.php?ctrl=forum&action=updatePost&id=<?= $post->getId() ?>" style="margin-right:2%">modifier</a>
+            <a type="button" class="btn btn-danger" href="index.php?ctrl=forum&action=delPost&id=<?= $post->getId() ?>">X</a>
+            <?php } ?>
         </div> 
+        <?php } ?>
     </div>
     <?php } ?>
 </main>
